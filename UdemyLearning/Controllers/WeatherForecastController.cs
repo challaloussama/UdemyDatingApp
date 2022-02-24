@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace UdemyLearning.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [DisableCors]
     public class WeatherForecastController : ControllerBase
     { 
         private static readonly string[] Summaries = new[]
@@ -19,6 +21,7 @@ namespace UdemyLearning.Controllers
         }
 
         [HttpGet(Name = "GetWeatherForecast")]
+        [DisableCors]
         public IEnumerable<WeatherForecast> Get()
         {
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast

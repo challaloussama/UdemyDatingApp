@@ -3,6 +3,9 @@ using UdemyLearning.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+
+
 // Add services to the container.
 
 builder.Services.AddControllers(); 
@@ -13,6 +16,11 @@ builder.Services.AddDbContext<DataContext>(options =>
 {
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+string corsName = "corsapp";
+builder.Services.AddCors(p => p.AddPolicy(name:corsName, builder =>
+{
+    builder.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader();
+}));
 
 
 var app = builder.Build();
@@ -24,7 +32,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+app.UseCors(corsName);
+
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 

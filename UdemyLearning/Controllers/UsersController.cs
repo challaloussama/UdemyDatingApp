@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UdemyLearning.Data;
 using UdemyLearning.Entities;
@@ -7,6 +8,8 @@ namespace UdemyLearning.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+
+
     public class UsersController : ControllerBase
     {
         private readonly DataContext _context;
@@ -16,6 +19,7 @@ namespace UdemyLearning.Controllers
         }
 
         [HttpGet]
+        
         public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()
         {
             var users = _context.Users.ToListAsync();
