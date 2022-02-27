@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Cors;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UdemyLearning.Data;
@@ -6,11 +7,7 @@ using UdemyLearning.Entities;
 
 namespace UdemyLearning.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-
-
-    public class UsersController : ControllerBase
+    public class UsersController : BaseApiController
     {
         private readonly DataContext _context;
         public UsersController(DataContext context)
@@ -19,6 +16,7 @@ namespace UdemyLearning.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         
         public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()
         {
@@ -27,6 +25,7 @@ namespace UdemyLearning.Controllers
             return await users;
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<AppUser>> GetUser(int id)
         {

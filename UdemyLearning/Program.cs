@@ -1,5 +1,11 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using UdemyLearning.Data;
+using UdemyLearning.Interfaces;
+using UdemyLearning.Services;
+using UdemyLearning.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,19 +14,20 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services.addApplicationServices(builder.Configuration);
+builder.Services.AddIdentityServices(builder.Configuration);
+
 builder.Services.AddControllers(); 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<DataContext>(options =>
-{
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
-});
+
 string corsName = "corsapp";
 builder.Services.AddCors(p => p.AddPolicy(name:corsName, builder =>
-{
-    builder.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader();
+{  
+    builder.WithOrigins("https://localhost:4200").AllowAnyMethod().AllowAnyHeader();
 }));
+
 
 
 var app = builder.Build();
@@ -35,6 +42,7 @@ if (app.Environment.IsDevelopment())
 app.UseCors(corsName);
 
 //app.UseHttpsRedirection();
+app.UseAuthentication();
 
 app.UseAuthorization();
 
