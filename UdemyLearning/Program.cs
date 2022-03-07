@@ -6,6 +6,7 @@ using UdemyLearning.Data;
 using UdemyLearning.Interfaces;
 using UdemyLearning.Services;
 using UdemyLearning.Extensions;
+using UdemyLearning.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,6 +39,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseCors(corsName);
 
